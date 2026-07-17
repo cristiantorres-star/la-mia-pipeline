@@ -1,0 +1,33 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Recupera codice
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Installa dipendenze
+        run: npm ci
+
+      - name: Esegui Test
+        run: npm test
+
+      - name: Esegui Build
+        run: npm run build
+
+      - name: Carica Artefatti
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+          
